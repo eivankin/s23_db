@@ -37,5 +37,13 @@ select name from instructor
 where dept_name = 'Biology';
 
 -- 6
+select s.sec_id, count(distinct t.id) as enrollment from section s
+left outer join takes t on s.sec_id = t.sec_id
+where t.year = 2022 and t.semester = 'Fall'
+group by s.sec_id;
 
 -- 7
+select max(enrollment) from (select count(distinct t.id) as enrollment from section s
+left outer join takes t on s.sec_id = t.sec_id
+where t.year = 2022 and t.semester = 'Fall'
+group by s.sec_id) y;
