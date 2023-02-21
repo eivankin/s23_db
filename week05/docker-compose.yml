@@ -17,14 +17,5 @@ services:
     volumes:
       - $PWD/pgdata:/var/lib/postgresql/data
 
-  adminer:
-    container_name: adminer
-    image: adminer
-    restart: always
-    ports:
-      - "8000:8080"
-    networks:
-      - local_net
-
 networks:
   local_net: {}

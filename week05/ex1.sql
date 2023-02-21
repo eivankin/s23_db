@@ -26,7 +26,11 @@ from (select count(distinct t.id) as enrollment from section s
 left outer join takes t on s.sec_id = t.sec_id
 group by s.sec_id) y;
 -- scalar subquery
--- TODO
+select max(y.enrollment) as max_enrollment, min(y.enrollment) as min_enrollment
+from (
+select s.sec_id, (select count(distinct t.id) from takes t where t.sec_id = s.sec_id) as enrollment
+from section s
+group by s.sec_id) y;
 
 -- 4
 select * from course
