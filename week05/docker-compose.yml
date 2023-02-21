@@ -1,0 +1,30 @@
+version: '3'
+services:
+
+
+  postgresql:
+    container_name: postgresql
+    image: postgres
+    environment:
+       - POSTGRES_USER=test_user
+       - POSTGRES_PASSWORD=example
+       - POSTGRES_DB=gino
+    restart: always
+    ports:
+      - "5000:5432"
+    networks:
+      - local_net
+    volumes:
+      - $PWD/pgdata:/var/lib/postgresql/data
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - "8000:8080"
+    networks:
+      - local_net
+
+networks:
+  local_net: {}
