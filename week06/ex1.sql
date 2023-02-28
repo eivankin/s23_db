@@ -72,7 +72,7 @@ GROUP BY oi.orderId
 ORDER BY total_price
 LIMIT 1;
 
--- 2. Customer with the most ordered items
+-- 2. Customer with the maximum number of ordered items
 SELECT customerName, city, sum(quantity) as total_quantity FROM customer
 LEFT OUTER JOIN "order" o on customer.customerId = o.customerId
 LEFT OUTER JOIN order_item oi on o.orderId = oi.orderId
