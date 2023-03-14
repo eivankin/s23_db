@@ -71,7 +71,11 @@ explain analyze execute halloween_films;
 -- Execution Time: 30.702 ms
 ----------------------------------------------------------------
 -- Conclusion:
--- Bottleneck is TODO
+-- Bottleneck: joins between `film` and `inventory` takes the most of the time of query execution (18 ms out of 30 ms).
+-- Its performance can be improved by adding index on `inventory.film_id`:
+create index idx_inventory_film_id on inventory using hash (film_id);
+explain analyze execute halloween_films; -- Now this query takes 14-15 ms instead of 30.
+drop index idx_inventory_film_id; -- Cleanup
 
 
 
@@ -154,4 +158,7 @@ explain analyze execute best_store_per_city;
 -- Execution Time: 19.075 ms
 ----------------------------------------------------------------
 -- Conclusion:
--- TODO
+-- Bottleneck: filtering by payment date can be done much faster by adding index on this field:
+create index idx_payment_date on payment using btree (payment_date); -- using `btree` method because it makes `BETWEEN` operator work faster;
+explain analyze execute best_store_per_city; -- Now query takes 10-11 ms instead of 18-19 ms
+drop index idx_payment_date; -- Cleanup
