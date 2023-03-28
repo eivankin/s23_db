@@ -20,9 +20,10 @@ insert into Account (username, fullname, balance, group_id)
 values ('bbrown', 'Bob Brown', 100, 3);
 
 
-set transaction isolation level read uncommitted;
+-- Part 1
 
 -- Session 1
+set transaction isolation level read uncommitted;
 begin;
 select * from Account;
 -- Compare results x2
@@ -34,6 +35,7 @@ commit;
 
 
 -- Session 2
+set transaction isolation level read uncommitted;
 begin;
 update Account set username = 'ajones' where fullname = 'Alice Jones';
 select * from Account;
@@ -46,3 +48,21 @@ update Account set balance = balance + 20 where username = 'ajones';
 -- In the second session operation is not executed until the transaction in the first session is committed
 rollback;
 
+-- Part 2
+set transaction isolation level read committed;
+
+update Account set group_id = 3 where username = 'bbrown';
+
+-- Session 1
+begin; -- 1
+select * from Account where group_id = 2; -- 2
+select * from Account where group_id = 2; -- 4
+update Account set balance = balance + 15 where group_id = 2; -- 5
+commit; -- 6
+
+-- Session 2
+begin; -- 1
+update Account set group_id = 2 where username = 'bbrown'; -- 3
+commit; -- 6
+
+-- TODO: explain
