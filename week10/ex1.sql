@@ -38,19 +38,14 @@ $$;
 begin;
 savepoint t1;
 call transfer(1, 3, 500);
-rollback to t1;
-commit;
 
-begin;
 savepoint t2;
 call transfer(2, 1, 700);
-rollback to t2;
-commit;
 
-begin;
 savepoint t3;
 call transfer(2, 3, 100);
-rollback to t3;
+
+rollback to t1;
 commit;
 
 select name, credit
@@ -103,19 +98,14 @@ $$;
 begin;
 savepoint t1;
 call transfer(1, 3, 500);
-rollback to t1;
-commit;
 
-begin;
 savepoint t2;
 call transfer(2, 1, 700);
-rollback to t2;
-commit;
 
-begin;
 savepoint t3;
 call transfer(2, 3, 100);
-rollback to t3;
+
+rollback to t1;
 commit;
 
 select name, credit
@@ -169,19 +159,13 @@ $$;
 begin;
 savepoint t1;
 call transfer(1, 3, 500);
--- rollback to t1;
-commit;
 
-begin;
 savepoint t2;
 call transfer(2, 1, 700);
--- rollback to t2;
-commit;
 
-begin;
 savepoint t3;
 call transfer(2, 3, 100);
--- rollback to t3;
+-- rollback to t1;
 commit;
 
 select name, credit
