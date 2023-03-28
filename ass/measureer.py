@@ -128,6 +128,7 @@ def explain(analyze=False):
 
             print(f"Query {i+1}")
             a = cur.fetchall()
+            print(*a, sep='\n')
             cost = extract_cost(a[0][0])
             print(a[0][0], "> cost =", cost)
 
