@@ -13,6 +13,8 @@ create index idx_film_pg13_nc17 on film using hash(film_id) where rating in ('PG
 CREATE INDEX idx_payment_2 on payment(rental_id) include (amount);
 CREATE INDEX idx_customer_1 on customer using hash(customer_id);
 CREATE INDEX idx_inventory_1 on inventory(film_id, inventory_id);
+CREATE INDEX idx_rental_date on rental using btree(rental_date ASC)
+    include (customer_id, rental_id, inventory_id) where rental_date between '2023-01-01' and '2023-02-01';
 
 -- 3
 CREATE INDEX idx_rental_2 on rental(last_update, customer_id);
@@ -20,4 +22,4 @@ CREATE INDEX idx_rental_3 on rental using hash(rental_id);
 CREATE INDEX idx_payment_3 on payment(rental_id, payment_date, payment_date) with (fillfactor = 33);
 
 -- 4
-create index idx_film_q4 on film using btree(rental_rate DESC, length ASC) where (rating in ('G', 'PG') and language_id = 1);
+CREATE INDEX idx_film_q4 on film using btree(rental_rate DESC, length ASC) where (rating in ('G', 'PG') and language_id = 1);
